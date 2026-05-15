@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Good Evening, Caroline</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Evening">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#07071e">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#07071e}
+:root{--card:rgba(20,14,52,0.72);--border:rgba(170,130,220,0.11);--lilac:#c4a8e8;--lilac-dim:rgba(196,168,232,0.55);--lilac-mute:rgba(196,168,232,0.28);--sakura:#f4a7b9;--text:#ede8f5;--text-mute:rgba(237,232,245,0.52);--text-dim:rgba(237,232,245,0.3);--nav-h:66px}
+body{color:var(--text);font-family:'Nunito',sans-serif;font-weight:400}
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 18% 22%,rgba(130,90,200,0.1) 0%,transparent 55%),radial-gradient(ellipse at 80% 78%,rgba(70,40,130,0.07) 0%,transparent 50%),linear-gradient(160deg,#07071e 0%,#0d0a28 45%,#060e1a 100%)}
+@keyframes pfall{0%{transform:translateY(-24px) rotate(0deg) translateX(0);opacity:0}6%{opacity:0.65}88%{opacity:0.4}100%{transform:translateY(102vh) rotate(380deg) translateX(var(--drift));opacity:0}}
+.petal{position:fixed;pointer-events:none;z-index:1;animation:pfall linear infinite}
+.screen{position:fixed;inset:0;z-index:10;overflow:hidden}
+#login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center}
+.brand{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,7vw,3.2rem);font-weight:300;color:var(--lilac);letter-spacing:0.03em;margin-bottom:0.25rem;line-height:1.25}
+.tagline{font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--lilac-mute);margin-bottom:3rem}
+.login-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-width:340px;backdrop-filter:blur(18px)}
+.form-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(196,168,232,0.18);border-radius:12px;padding:0.9rem 1.1rem;color:var(--text);font-family:'Nunito',sans-serif;font-size:0.95rem;outline:none;transition:border-color 0.3s;letter-spacing:0.08em;display:block}
+.form-input:focus{border-color:rgba(196,168,232,0.45)}
+.form-input::placeholder{color:var(--text-dim);letter-spacing:0.04em}
+.btn-primary{width:100%;background:linear-gradient(135deg,#7c4fcc,#6535b5);border:none;border-radius:12px;padding:0.95rem;color:white;font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;letter-spacing:0.07em;transition:opacity 0.2s,transform 0.15s;margin-top:0.9rem}
+.btn-primary:hover{opacity:0.9;transform:translateY(-1px)}
+.err-msg{font-size:0.78rem;color:#f4a7b9;margin-top:0.7rem;opacity:0;transition:opacity 0.3s;height:1.1rem}
+.err-msg.show{opacity:1}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.shake{animation:shake 0.5s}
+.deco{margin-top:2.2rem;font-size:1.5rem;opacity:0.28}
+#app-screen{display:none;flex-direction:column}
+#scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;padding:1.5rem 1rem calc(var(--nav-h) + 1.5rem);-webkit-overflow-scrolling:touch}
+#scroll-area::-webkit-scrollbar{width:3px}
+#scroll-area::-webkit-scrollbar-thumb{background:rgba(196,168,232,0.18);border-radius:2px}
+.inner{max-width:640px;margin:0 auto}
+#bottom-nav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:rgba(9,7,26,0.9);border-top:1px solid var(--border);display:flex;z-index:100;backdrop-filter:blur(24px);padding-bottom:env(safe-area-inset-bottom,0)}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;cursor:pointer;color:var(--text-dim);font-family:'Nunito',sans-serif;font-size:0.58rem;letter-spacing:0.07em;text-transform:uppercase;transition:color 0.2s;padding:0}
+.nav-item.active{color:var(--lilac)}
+.nav-icon{font-size:1.3rem}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.7rem,6vw,2.8rem);font-weight:300;color:var(--lilac);line-height:1.15;margin-bottom:0.2rem}
+.page-sub{font-size:0.7rem;color:var(--text-dim);letter-spacing:0.16em;text-transform:uppercase;margin-bottom:1.5rem}
+.section-tag{font-size:0.63rem;letter-spacing:0.24em;text-transform:uppercase;color:var(--lilac-mute);margin-bottom:0.7rem;display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.3rem;margin-bottom:0.85rem;backdrop-filter:blur(12px)}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:300;color:var(--lilac);margin-bottom:0.85rem;letter-spacing:0.02em}
+.streak-pill{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(244,167,185,0.08);border:1px solid rgba(244,167,185,0.2);border-radius:20px;padding:0.32rem 0.9rem;font-size:0.76rem;color:var(--sakura);margin-bottom:1.2rem}
+.mood-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0.38rem}
+.mood-btn{display:flex;flex-direction:column;align-items:center;gap:0.15rem;padding:0.5rem 0.2rem;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all 0.2s;font-family:'Nunito',sans-serif}
+.mood-btn:hover{background:rgba(196,168,232,0.08)}
+.mood-btn.sel{background:rgba(196,168,232,0.18);border-color:rgba(196,168,232,0.42)}
+.mood-em{font-size:1.35rem;display:block}
+.mood-lb{font-size:0.5rem;color:var(--text-dim)}
+.tabs{display:flex;gap:0.38rem;margin-bottom:1.2rem}
+.tab{flex:1;padding:0.48rem 0.2rem;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.62rem;letter-spacing:0.09em;text-transform:uppercase;color:var(--text-dim);text-align:center;transition:all 0.2s}
+.tab.active{background:rgba(196,168,232,0.14);border-color:rgba(196,168,232,0.35);color:var(--lilac)}
+.check-item{display:flex;align-items:center;gap:0.85rem;padding:0.75rem 0;border-bottom:1px solid rgba(196,168,232,0.05);cursor:pointer;transition:opacity 0.3s}
+.check-item:last-child{border-bottom:none}
+.check-item.done{opacity:0.42}
+.check-circle{width:22px;height:22px;border-radius:50%;border:1.5px solid rgba(196,168,232,0.35);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.68rem;transition:all 0.25s;color:white}
+.check-circle.done{background:linear-gradient(135deg,#8b5cf6,#7c3aed);border-color:transparent}
+.check-text{flex:1;font-size:0.9rem;color:rgba(237,232,245,0.82)}
+.check-em{font-size:1rem}
+.prog-bar{height:2px;background:rgba(196,168,232,0.07);border-radius:1px;margin-bottom:1rem;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,#8b5cf6,#f4a7b9);border-radius:1px;transition:width 0.5s ease}
+.cp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem}
+.cp-btn{display:flex;flex-direction:column;align-items:center;gap:0.38rem;padding:0.85rem 0.3rem;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:all 0.2s;font-family:'Nunito',sans-serif}
+.cp-btn:hover{background:rgba(196,168,232,0.08);transform:translateY(-2px)}
+.cp-btn.sel{background:rgba(196,168,232,0.18);border-color:rgba(196,168,232,0.42)}
+.cp-em{font-size:1.65rem;display:block}
+.cp-lb{font-size:0.58rem;color:var(--text-mute);text-align:center;line-height:1.3}
+.tip-bar{background:rgba(244,167,185,0.07);border:1px solid rgba(244,167,185,0.18);border-radius:10px;padding:0.65rem 0.9rem;font-size:0.8rem;color:rgba(244,167,185,0.75);margin-top:0.9rem}
+.eos-ta,.eos-in{width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(196,168,232,0.14);border-radius:10px;padding:0.82rem 1rem;color:var(--text);font-family:'Nunito',sans-serif;font-size:0.88rem;line-height:1.65;outline:none;resize:none;transition:border-color 0.25s}
+.eos-ta:focus,.eos-in:focus{border-color:rgba(196,168,232,0.4)}
+.eos-ta::placeholder,.eos-in::placeholder{color:var(--text-dim)}
+.eos-in{height:44px;padding:0.6rem 1rem;line-height:1.5}
+.field-lbl{font-size:0.65rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--lilac-mute);margin-bottom:0.42rem;display:block}
+.field-note{font-size:0.76rem;color:var(--text-dim);margin-bottom:0.82rem;line-height:1.6;font-style:italic}
+.t3-row{display:flex;align-items:center;gap:0.65rem;margin-bottom:0.55rem}
+.t3-num{width:26px;height:26px;border-radius:50%;background:rgba(196,168,232,0.07);border:1px solid rgba(196,168,232,0.18);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:0.85rem;color:var(--lilac-mute);flex-shrink:0}
+.save-btn{width:100%;background:linear-gradient(135deg,#7c4fcc,#6535b5);border:none;border-radius:12px;padding:0.92rem;color:white;font-family:'Nunito',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;letter-spacing:0.05em;transition:all 0.25s;margin-top:0.8rem}
+.save-btn:hover{opacity:0.9}
+.save-btn.ok{background:linear-gradient(135deg,#4ade80,#22c55e)}
+.save-btn.ghost{background:rgba(196,168,232,0.1);margin-top:0}
+.form-pair{display:flex;gap:0.5rem;margin-top:0.6rem}
+.form-pair .save-btn{margin:0;flex:1;padding:0.7rem;font-size:0.82rem}
+.filter-row{display:flex;gap:0.38rem;flex-wrap:wrap;margin-bottom:1rem}
+.flt-btn{padding:0.28rem 0.82rem;border-radius:20px;border:1px solid var(--border);background:rgba(255,255,255,0.02);color:var(--text-dim);font-size:0.7rem;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.2s}
+.flt-btn.active{background:rgba(196,168,232,0.13);border-color:rgba(196,168,232,0.38);color:var(--lilac)}
+.book-row{display:flex;align-items:flex-start;gap:0.65rem;padding:0.78rem 0;border-bottom:1px solid rgba(196,168,232,0.05)}
+.book-row:last-of-type{border-bottom:none}
+.bk-check{width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(196,168,232,0.3);cursor:pointer;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;transition:all 0.2s;background:none;color:white}
+.bk-check.read{background:linear-gradient(135deg,#4ade80,#22c55e);border-color:transparent}
+.book-info{flex:1;min-width:0}
+.bk-title{font-size:0.87rem;color:var(--text);margin-bottom:0.1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bk-title.read{text-decoration:line-through;color:var(--text-dim)}
+.bk-author{font-size:0.7rem;color:var(--text-dim);font-style:italic;margin-bottom:0.12rem}
+.bk-cat{font-size:0.56rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.12rem 0.45rem;border-radius:8px;display:inline-block}
+.bk-curr-btn{background:none;border:none;cursor:pointer;font-size:0.75rem;flex-shrink:0;padding:0.15rem;margin-top:1px}
+.add-btn{display:flex;align-items:center;justify-content:center;gap:0.4rem;width:100%;padding:0.68rem;background:rgba(196,168,232,0.05);border:1px dashed rgba(196,168,232,0.2);border-radius:10px;color:var(--text-dim);font-size:0.8rem;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:0.8rem;transition:all 0.2s}
+.add-btn:hover{background:rgba(196,168,232,0.1);color:var(--lilac-dim)}
+.log-entry{padding:0.88rem 0;border-bottom:1px solid rgba(196,168,232,0.05)}
+.log-entry:last-child{border-bottom:none}
+.log-date{font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);margin-bottom:0.32rem}
+.log-meta{font-size:0.78rem;color:var(--text-mute);margin-bottom:0.28rem}
+.log-q{font-size:0.8rem;color:rgba(237,232,245,0.58);font-style:italic;line-height:1.5;margin-bottom:0.2rem}
+.log-t3{font-size:0.7rem;color:var(--text-dim);margin-top:0.15rem}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem}
+.cal-nav-btn{background:none;border:1px solid var(--border);border-radius:8px;padding:0.35rem 0.7rem;color:var(--lilac-dim);cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.8rem;transition:all 0.2s}
+.cal-nav-btn:hover{background:rgba(196,168,232,0.1)}
+.cal-month{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;color:var(--lilac)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:1.2rem}
+.cal-hd{text-align:center;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);padding:0.3rem 0}
+.cal-day{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:8px;position:relative}
+.cal-day.empty{opacity:0;pointer-events:none}
+.cal-day.today{border:1px solid rgba(196,168,232,0.3)}
+.cal-day-n{font-size:0.7rem;color:var(--text-dim);line-height:1}
+.cal-dot{width:6px;height:6px;border-radius:50%;margin-top:3px}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-bottom:1rem}
+.stat-card{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:12px;padding:0.9rem;text-align:center}
+.stat-v{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--lilac);display:block}
+.stat-l{font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);margin-top:0.2rem;display:block}
+.tonight-row{display:flex;align-items:center;gap:0.8rem;padding:0.65rem 0.88rem;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;cursor:pointer;margin-bottom:0.48rem;transition:all 0.2s}
+.tonight-row:hover{background:rgba(196,168,232,0.06)}
+.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem}
+.quick-btn{display:flex;align-items:center;gap:0.55rem;padding:0.78rem;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:12px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.8rem;color:var(--text-mute);transition:all 0.2s}
+.quick-btn:hover{background:rgba(196,168,232,0.07);color:var(--lilac-dim)}
+.qi{font-size:1.05rem}
+.empty{text-align:center;padding:2.5rem 1rem;color:var(--text-dim);font-size:0.83rem;line-height:1.6}
+.empty-ic{font-size:2rem;margin-bottom:0.6rem;display:block}
+.glow{position:fixed;border-radius:50%;pointer-events:none;z-index:0}
+@keyframes gp{0%,100%{opacity:0.5}50%{opacity:1}}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<div id="petals"></div>
+<div class="glow" style="width:380px;height:380px;left:-8%;top:-10%;background:radial-gradient(circle,rgba(124,79,204,0.08),transparent 70%);animation:gp 5s ease-in-out infinite"></div>
+<div class="glow" style="width:260px;height:260px;right:-6%;bottom:18%;background:radial-gradient(circle,rgba(244,167,185,0.06),transparent 70%);animation:gp 7s ease-in-out infinite 2.5s"></div>
+
+<div id="login-screen" class="screen">
+  <div class="brand">Good Evening,<br>Caroline</div>
+  <div class="tagline">Your Omakase Night</div>
+  <div class="login-box" id="login-box">
+    <input class="form-input" type="password" id="pw-in" placeholder="Your private password" autocomplete="current-password">
+    <button class="btn-primary" onclick="tryLogin()">Enter &nbsp;→</button>
+    <div class="err-msg" id="err-msg">Incorrect password</div>
+  </div>
+  <div class="deco">🌸 &nbsp; 🌸</div>
+</div>
+
+<div id="app-screen" class="screen">
+  <div id="scroll-area"><div class="inner" id="vc"></div></div>
+  <nav id="bottom-nav">
+    <button class="nav-item active" data-nav="home" onclick="nav('home')"><span class="nav-icon">🏠</span><span>Home</span></button>
+    <button class="nav-item" data-nav="tonight" onclick="nav('tonight')"><span class="nav-icon">🌙</span><span>Tonight</span></button>
+    <button class="nav-item" data-nav="reflect" onclick="nav('reflect')"><span class="nav-icon">✍️</span><span>Reflect</span></button>
+    <button class="nav-item" data-nav="books" onclick="nav('books')"><span class="nav-icon">📚</span><span>Books</span></button>
+    <button class="nav-item" data-nav="history" onclick="nav('history')"><span class="nav-icon">🗓</span><span>History</span></button>
+  </nav>
+</div>
+
+<script>
+const PW='B311aD0g31!';
+const TRANS=[
+  {id:'clothes',label:'Change into comfortable clothes',em:'👘'},
+  {id:'lights',label:'Dim the lights',em:'🕯️'},
+  {id:'meditation',label:'Meditation & Prayer',em:'🙏'},
+];
+const WIND=[
+  {id:'care',label:'Personal Care',em:'✨'},
+  {id:'affirmations',label:'Affirmations',em:'💫'},
+  {id:'breathing',label:'Breathing',em:'🌬️'},
+];
+const CPS=[
+  {id:'shower',label:'Relaxing Shower',em:'🚿',tip:'🎵 Put your playlist on now'},
+  {id:'stretch',label:'Stretching',em:'🧘'},{id:'gym',label:'Gym',em:'💪'},
+  {id:'walk',label:'Walk',em:'🚶'},{id:'painting',label:'Painting',em:'🎨'},
+  {id:'reading',label:'Reading',em:'📖'},{id:'yt',label:'YouTube Learning',em:'📺'},
+  {id:'learning',label:'Self Learning',em:'🧠'},{id:'writing',label:'Writing',em:'✍️'},
+  {id:'friends',label:'Friend Time',em:'👫'},{id:'harry',label:'Harry Time',em:'💕'},
+  {id:'parents',label:'Parents Time',em:'📞'},{id:'dinner',label:'Dinner Out',em:'🍽️'},
+  {id:'game',label:'Game Night',em:'🎮'},{id:'movie',label:'Movie Night',em:'🎬'},
+  {id:'admin',label:'Admin Night',em:'📋'},{id:'cleaning',label:'Cleaning Night',em:'🧹'},
+];
+const MOODS=[
+  {em:'✨',lb:'Luminous',sc:5},{em:'😌',lb:'Peaceful',sc:4},{em:'🌸',lb:'Gentle',sc:4},
+  {em:'😊',lb:'Content',sc:5},{em:'💫',lb:'Hopeful',sc:4},{em:'😔',lb:'Low',sc:2},
+  {em:'😤',lb:'Frustrated',sc:2},{em:'😰',lb:'Anxious',sc:1},{em:'🥱',lb:'Drained',sc:2},
+  {em:'🌙',lb:'Reflective',sc:3},
+];
+const MSC=Object.fromEntries(MOODS.map(m=>[m.em,m.sc]));
+const CAT_COLS=[
+  {bg:'rgba(125,211,252,0.12)',tx:'#7dd3fc'},{bg:'rgba(244,167,185,0.12)',tx:'#f4a7b9'},
+  {bg:'rgba(134,239,172,0.12)',tx:'#86efac'},{bg:'rgba(196,168,232,0.14)',tx:'#c4a8e8'},
+  {bg:'rgba(253,224,132,0.12)',tx:'#fde084'},{bg:'rgba(251,207,232,0.12)',tx:'#fbb6ce'},
+  {bg:'rgba(165,180,252,0.12)',tx:'#a5b4fc'},{bg:'rgba(110,231,183,0.12)',tx:'#6ee7b7'},
+];
+const INIT_BOOKS=[
+  {id:1,t:'Meditations',a:'Marcus Aurelius',c:'Philosophy',read:false,curr:false},
+  {id:2,t:"Man's Search for Meaning",a:'Viktor Frankl',c:'Philosophy',read:false,curr:false},
+  {id:3,t:'The Republic',a:'Plato',c:'Philosophy',read:false,curr:false},
+  {id:4,t:'Thus Spoke Zarathustra',a:'Friedrich Nietzsche',c:'Philosophy',read:false,curr:false},
+  {id:5,t:'The Power of Now',a:'Eckhart Tolle',c:'Philosophy',read:false,curr:false},
+  {id:6,t:'Being Mortal',a:'Atul Gawande',c:'Philosophy',read:false,curr:false},
+  {id:7,t:'A Brief History of Time',a:'Stephen Hawking',c:'Science',read:false,curr:false},
+  {id:8,t:'Sapiens',a:'Yuval Noah Harari',c:'Science',read:false,curr:false},
+  {id:9,t:'The Selfish Gene',a:'Richard Dawkins',c:'Science',read:false,curr:false},
+  {id:10,t:'Why We Sleep',a:'Matthew Walker',c:'Science',read:false,curr:false},
+  {id:11,t:'The Gene',a:'Siddhartha Mukherjee',c:'Science',read:false,curr:false},
+  {id:12,t:'Thinking, Fast and Slow',a:'Daniel Kahneman',c:'Psychology',read:false,curr:false},
+  {id:13,t:'The Body Keeps the Score',a:'Bessel van der Kolk',c:'Psychology',read:false,curr:false},
+  {id:14,t:'Flow',a:'Mihaly Csikszentmihalyi',c:'Psychology',read:false,curr:false},
+  {id:15,t:'Atomic Habits',a:'James Clear',c:'Psychology',read:false,curr:false},
+  {id:16,t:'The Anxious Generation',a:'Jonathan Haidt',c:'Psychology',read:false,curr:false},
+  {id:17,t:'When the Body Says No',a:'Gabor Maté',c:'Psychology',read:false,curr:false},
+];
+
+function gl(k,d){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d}catch{return d}}
+function sl(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
+
+const TODAY=new Date().toDateString();
+const TODAY_D=new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+
+const S={
+  view:'home',tab:'transition',htab:'log',
+  cy:new Date().getFullYear(),cm:new Date().getMonth(),
+  mood:null,tC:{},cp:null,wC:{},
+  grat:'',wins:'',jour:'',brain:'',t3:['','',''],
+  bf:'All',showAdd:false,af:{t:'',a:'',c:''},
+  saved:false,
+  books:gl('eos_books',INIT_BOOKS),
+  streak:parseInt(gl('eos_streak',0))||0,
+  logs:gl('eos_logs',[]),
+};
+try{const d=gl('eos_today_'+TODAY,null);if(d)Object.assign(S,{mood:d.mood||null,tC:d.tC||{},cp:d.cp||null,wC:d.wC||{},grat:d.grat||'',wins:d.wins||'',jour:d.jour||'',brain:d.brain||'',t3:d.t3||['','','']})}catch{}
+
+function allCats(){const s=new Set();S.books.forEach(b=>{if(b.c)s.add(b.c)});return['All',...Array.from(s).sort()]}
+function catCol(name){const cats=Array.from(new Set(S.books.map(b=>b.c).filter(Boolean))).sort();const i=cats.indexOf(name)%CAT_COLS.length;return CAT_COLS[Math.max(0,i)]}
+function dotCol(sc){if(!sc)return'rgba(196,168,232,0.3)';if(sc>=5)return'#86efac';if(sc>=4)return'#c4a8e8';if(sc>=3)return'#7dd3fc';if(sc>=2)return'#fde084';return'#f4a7b9'}
+
+(()=>{const c=document.getElementById('petals');
+[{l:'6%',d:'15s',dl:'0s',s:10,dr:'18px'},{l:'17%',d:'18s',dl:'3.5s',s:8,dr:'-16px'},
+ {l:'31%',d:'13s',dl:'7s',s:12,dr:'22px'},{l:'46%',d:'17s',dl:'1.2s',s:9,dr:'-12px'},
+ {l:'59%',d:'14s',dl:'9s',s:11,dr:'20px'},{l:'72%',d:'19s',dl:'4.5s',s:8,dr:'-20px'},
+ {l:'84%',d:'16s',dl:'2s',s:10,dr:'15px'},{l:'94%',d:'12s',dl:'6s',s:7,dr:'-14px'}]
+.forEach(p=>{const el=document.createElement('div');el.className='petal';
+  el.style.cssText=`left:${p.l};top:-24px;animation-duration:${p.d};animation-delay:${p.dl};--drift:${p.dr};opacity:0.55`;
+  el.innerHTML=`<svg width="${p.s}" height="${Math.round(p.s*.75)}" viewBox="0 0 20 15"><ellipse cx="10" cy="7.5" rx="9" ry="5" fill="#f4a7b9" transform="rotate(35 10 7.5)"/></svg>`;
+  c.appendChild(el);});
+})();
+
+document.getElementById('pw-in').addEventListener('keydown',e=>{if(e.key==='Enter')tryLogin()});
+function tryLogin(){
+  if(document.getElementById('pw-in').value===PW){
+    document.getElementById('login-screen').style.display='none';
+    const a=document.getElementById('app-screen');a.style.display='flex';a.style.flexDirection='column';
+    render();
+  }else{
+    const b=document.getElementById('login-box');b.classList.add('shake');setTimeout(()=>b.classList.remove('shake'),550);
+    const e=document.getElementById('err-msg');e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2200);
+    document.getElementById('pw-in').value='';
+  }
+}
+
+function nav(v){S.view=v;document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.nav===v));document.getElementById('scroll-area').scrollTop=0;render()}
+function setTab(t){S.tab=t;nav('tonight')}
+function qs(){sl('eos_today_'+TODAY,{mood:S.mood,tC:S.tC,cp:S.cp,wC:S.wC,grat:S.grat,wins:S.wins,jour:S.jour,brain:S.brain,t3:S.t3})}
+function collectAndSave(){
+  const fmap={grat:'f-grat',wins:'f-wins',jour:'f-jour',brain:'f-brain'};
+  Object.keys(fmap).forEach(k=>{const el=document.getElementById(fmap[k]);if(el)S[k]=el.value});
+  [0,1,2].forEach(i=>{const el=document.getElementById('f-t3-'+i);if(el)S.t3[i]=el.value});
+  qs();
+  const cpO=CPS.find(c=>c.id===S.cp);
+  const entry={date:TODAY,dateDisplay:TODAY_D,mood:S.mood,cp:S.cp,cpLabel:cpO?.label,gratitude:S.grat,wins:S.wins,brain:S.brain,t3:S.t3};
+  S.logs=[entry,...S.logs.filter(l=>l.date!==TODAY)].slice(0,90);
+  sl('eos_logs',S.logs);
+  const last=localStorage.getItem('eos_lastlog');
+  if(last!==TODAY){const y=new Date();y.setDate(y.getDate()-1);S.streak=last===y.toDateString()?S.streak+1:1;sl('eos_streak',S.streak);localStorage.setItem('eos_lastlog',TODAY)}
+  S.saved=true;render();setTimeout(()=>{S.saved=false;render()},2800);
+}
+function toggleRead(id){S.books=S.books.map(b=>b.id===id?{...b,read:!b.read}:b);sl('eos_books',S.books);render()}
+function toggleCurr(id){S.books=S.books.map(b=>({...b,curr:b.id===id?!b.curr:false}));sl('eos_books',S.books);render()}
+function setFilt(f){S.bf=f;render()}
+function openAdd(){S.showAdd=true;render()}
+function closeAdd(){S.showAdd=false;S.af={t:'',a:'',c:''};render()}
+function doAdd(){
+  const t=(document.getElementById('nb-t')||{}).value?.trim();
+  const a=(document.getElementById('nb-a')||{}).value?.trim();
+  const c=(document.getElementById('nb-c')||{}).value?.trim();
+  if(!t)return;
+  S.books=[...S.books,{id:Date.now(),t,a:a||'',c:c||'Uncategorised',read:false,curr:false}];
+  sl('eos_books',S.books);closeAdd();
+}
+function setMood(em){S.mood=S.mood===em?null:em;qs();render()}
+function tTC(id){S.tC[id]=!S.tC[id];qs();render()}
+function tWC(id){S.wC[id]=!S.wC[id];qs();render()}
+function selCP(id){S.cp=S.cp===id?null:id;qs();render()}
+function calPrev(){if(S.cm===0){S.cm=11;S.cy--}else S.cm--;render()}
+function calNext(){if(S.cm===11){S.cm=0;S.cy++}else S.cm++;render()}
+function esc(s){if(!s)return'';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+function render(){
+  const el=document.getElementById('vc');
+  el.innerHTML={home:rHome,tonight:rTonight,reflect:rReflect,books:rBooks,history:rHistory}[S.view]?.()??rHome();
+  const fm={grat:'f-grat',wins:'f-wins',jour:'f-jour',brain:'f-brain'};
+  Object.keys(fm).forEach(k=>{const e=document.getElementById(fm[k]);if(e)e.addEventListener('input',ev=>S[k]=ev.target.value)});
+  [0,1,2].forEach(i=>{const e=document.getElementById('f-t3-'+i);if(e)e.addEventListener('input',ev=>S.t3[i]=ev.target.value)});
+}
+
+function rHome(){
+  const tP=TRANS.filter(s=>S.tC[s.id]).length,wP=WIND.filter(s=>S.wC[s.id]).length,cpO=CPS.find(c=>c.id===S.cp);
+  return`<div class="page-title">Wishing You a Lovely Evening</div>
+<div class="page-sub">${TODAY_D}</div>
+${S.streak>0?`<div class="streak-pill">🔥 ${S.streak} day${S.streak!==1?'s':''} gratitude streak</div>`:''}
+<div class="card"><div class="card-title">How are you arriving?</div>
+<div class="mood-grid">${MOODS.map(m=>`<button class="mood-btn${S.mood===m.em?' sel':''}" onclick="setMood('${m.em}')"><span class="mood-em">${m.em}</span><span class="mood-lb">${m.lb}</span></button>`).join('')}</div></div>
+<div class="card"><div class="section-tag">Tonight's Omakase</div>
+<div class="tonight-row" onclick="setTab('transition')"><span style="font-size:1.1rem">🕯️</span><span style="flex:1;font-size:0.87rem;color:rgba(237,232,245,0.78)">Transition</span><span style="font-size:0.7rem;color:var(--lilac-mute)">${tP}/${TRANS.length} done</span></div>
+<div class="tonight-row" onclick="setTab('centerpiece')"><span style="font-size:1.1rem">${cpO?cpO.em:'✨'}</span><span style="flex:1;font-size:0.87rem;color:rgba(237,232,245,0.78)">${cpO?cpO.label:'Centrepiece'}</span><span style="font-size:0.7rem;color:var(--lilac-mute)">${cpO?'✓ Chosen':'Select'}</span></div>
+<div class="tonight-row" onclick="setTab('winddown')"><span style="font-size:1.1rem">🌙</span><span style="flex:1;font-size:0.87rem;color:rgba(237,232,245,0.78)">Wind Down</span><span style="font-size:0.7rem;color:var(--lilac-mute)">${wP}/${WIND.length} done</span></div></div>
+<div class="card"><div class="section-tag">Evening Practices</div>
+<div class="quick-grid"><button class="quick-btn" onclick="nav('reflect')"><span class="qi">✍️</span>Reflect</button><button class="quick-btn" onclick="nav('books')"><span class="qi">📚</span>Books</button><button class="quick-btn" onclick="nav('history')"><span class="qi">🗓</span>History</button></div></div>`}
+
+function rTonight(){return`<div class="page-title">Tonight</div><div class="page-sub">Design your evening</div>
+<div class="tabs"><button class="tab${S.tab==='transition'?' active':''}" onclick="S.tab='transition';render()">🕯️ Transition</button><button class="tab${S.tab==='centerpiece'?' active':''}" onclick="S.tab='centerpiece';render()">✨ Centrepiece</button><button class="tab${S.tab==='winddown'?' active':''}" onclick="S.tab='winddown';render()">🌙 Wind Down</button></div>
+${{transition:rTrans,centerpiece:rCP,winddown:rWind}[S.tab]?.()??rTrans()}`}
+
+function rTrans(){const p=TRANS.filter(s=>S.tC[s.id]).length;return`<div class="card"><div class="card-title">Transition</div><div class="prog-bar"><div class="prog-fill" style="width:${p/TRANS.length*100}%"></div></div><p class="field-note">Moving from the world into your evening</p>${TRANS.map(s=>`<div class="check-item${S.tC[s.id]?' done':''}" onclick="tTC('${s.id}')"><div class="check-circle${S.tC[s.id]?' done':''}">${S.tC[s.id]?'✓':''}</div><span class="check-text">${s.label}</span><span class="check-em">${s.em}</span></div>`).join('')}</div>`}
+
+function rCP(){const cpO=CPS.find(c=>c.id===S.cp);return`<div class="card"><div class="card-title">Centrepiece</div><p class="field-note">The heart of your evening — choose one</p><div class="cp-grid">${CPS.map(c=>`<button class="cp-btn${S.cp===c.id?' sel':''}" onclick="selCP('${c.id}')"><span class="cp-em">${c.em}</span><span class="cp-lb">${c.label}</span></button>`).join('')}</div>${cpO?.tip?`<div class="tip-bar">${cpO.tip}</div>`:''}</div>`}
+
+function rWind(){const p=WIND.filter(s=>S.wC[s.id]).length;return`<div class="card"><div class="card-title">Wind Down</div><div class="prog-bar"><div class="prog-fill" style="width:${p/WIND.length*100}%"></div></div><p class="field-note">Preparing body and mind for rest</p>${WIND.map(s=>`<div class="check-item${S.wC[s.id]?' done':''}" onclick="tWC('${s.id}')"><div class="check-circle${S.wC[s.id]?' done':''}">${S.wC[s.id]?'✓':''}</div><span class="check-text">${s.label}</span><span class="check-em">${s.em}</span></div>`).join('')}</div>`}
+
+function rReflect(){return`<div class="page-title">Reflect</div><div class="page-sub">Evening contemplation</div>
+<div class="card"><div class="card-title">Gratitude</div><span class="field-lbl">One or two things you're grateful for today</span><textarea class="eos-ta" rows="3" id="f-grat" placeholder="Today I'm grateful for...">${esc(S.grat)}</textarea></div>
+<div class="card"><div class="card-title">Today's Wins</div><span class="field-lbl">What did you succeed in today?</span><textarea class="eos-ta" rows="3" id="f-wins" placeholder="I succeeded in...">${esc(S.wins)}</textarea></div>
+<div class="card"><div class="card-title">Journal</div><span class="field-lbl">Anything else on your mind</span><textarea class="eos-ta" rows="7" id="f-jour" placeholder="Today I noticed...">${esc(S.jour)}</textarea></div>
+<div class="card"><div class="card-title">Evening Brain Dump</div><p class="field-note">Release any circling thoughts, worries, or unfinished loops onto the page. Once written, your mind can truly let go — this directly calms overnight cortisol and quiets anxious waking.</p><textarea class="eos-ta" rows="5" id="f-brain" placeholder="Getting this out of my head...">${esc(S.brain)}</textarea></div>
+<div class="card"><div class="card-title">Tomorrow's Three</div><p class="field-note">Three gentle priorities — enough direction, not enough to overwhelm. Your morning self will thank you.</p>${[0,1,2].map(i=>`<div class="t3-row"><div class="t3-num">${i+1}</div><input class="eos-in" id="f-t3-${i}" value="${esc(S.t3[i])}" placeholder="Priority ${i+1}..."></div>`).join('')}</div>
+<button class="save-btn${S.saved?' ok':''}" onclick="collectAndSave()">${S.saved?'✓ &nbsp;Saved tonight':"Save Tonight's Reflection"}</button><div style="height:1rem"></div>`}
+
+function rBooks(){
+  const cats=allCats();
+  const filt=S.bf==='All'?S.books:S.books.filter(b=>b.c===S.bf);
+  const rdg=S.books.filter(b=>b.curr);
+  return`<div class="page-title">Book List</div><div class="page-sub">All your reads, by category</div>
+${rdg.length?`<div class="card" style="border-color:rgba(244,167,185,0.2)"><div class="section-tag" style="color:rgba(244,167,185,0.55)">Currently Reading</div>${rdg.map(b=>`<div style="display:flex;align-items:center;gap:0.6rem;padding:0.3rem 0"><span style="font-size:1.1rem">📖</span><div><div style="font-size:0.88rem">${esc(b.t)}</div><div style="font-size:0.7rem;color:var(--text-dim);font-style:italic">${esc(b.a)}</div></div></div>`).join('')}</div>`:''}
+<div class="filter-row">${cats.map(c=>`<button class="flt-btn${S.bf===c?' active':''}" onclick="setFilt('${esc(c)}')">${esc(c)}</button>`).join('')}</div>
+<div class="card">
+${filt.length===0?`<div class="empty"><span class="empty-ic">📚</span>No books in this category yet</div>`:''}
+${filt.map(b=>{const col=catCol(b.c);return`<div class="book-row" style="opacity:${b.read?0.48:1}"><button class="bk-check${b.read?' read':''}" onclick="toggleRead(${b.id})">${b.read?'✓':''}</button><div class="book-info"><div class="bk-title${b.read?' read':''}" title="${esc(b.t)}">${esc(b.t)}</div><div class="bk-author">${esc(b.a)}</div><span class="bk-cat" style="background:${col.bg};color:${col.tx}">${esc(b.c)}</span></div><button class="bk-curr-btn" onclick="toggleCurr(${b.id})" style="color:${b.curr?'#f4a7b9':'rgba(196,168,232,0.18)'}">${b.curr?'📖':'○'}</button></div>`}).join('')}
+${S.showAdd?`<div style="padding-top:1rem;border-top:1px solid rgba(196,168,232,0.08);margin-top:0.6rem">
+<span class="field-lbl">Title</span><input class="eos-in" id="nb-t" placeholder="Book title" value="${esc(S.af.t)}" style="margin-bottom:0.5rem">
+<span class="field-lbl">Author</span><input class="eos-in" id="nb-a" placeholder="Author name" value="${esc(S.af.a)}" style="margin-bottom:0.5rem">
+<span class="field-lbl">Category <span style="color:var(--text-dim);font-size:0.6rem;letter-spacing:0;text-transform:none">(pick existing or type a new one)</span></span>
+<input class="eos-in" id="nb-c" placeholder="e.g. History, Sport, Fiction…" list="cat-dl" value="${esc(S.af.c)}" style="margin-bottom:0.5rem">
+<datalist id="cat-dl">${cats.filter(c=>c!=='All').map(c=>`<option value="${esc(c)}">`).join('')}</datalist>
+<div class="form-pair"><button class="save-btn" onclick="doAdd()">Add Book</button><button class="save-btn ghost" onclick="closeAdd()">Cancel</button></div>
+</div>`:`<button class="add-btn" onclick="openAdd()">+ Add a book</button>`}
+</div>`}
+
+function rHistory(){return`<div class="page-title">History</div><div class="page-sub">Past evenings</div>
+<div class="tabs"><button class="tab${S.htab==='log'?' active':''}" onclick="S.htab='log';render()">📋 Entry Log</button><button class="tab${S.htab==='month'?' active':''}" onclick="S.htab='month';render()">📅 Monthly View</button></div>
+${S.htab==='month'?rMonthly():rLog()}`}
+
+function rLog(){
+  if(!S.logs.length)return`<div class="card"><div class="empty"><span class="empty-ic">🌙</span>Your evening reflections will appear here after you save your first night</div></div>`;
+  return`<div class="card">${S.logs.map(l=>`<div class="log-entry"><div class="log-date">${l.dateDisplay||l.date}</div><div class="log-meta">${l.mood?l.mood+' ':''}${l.cpLabel?'· '+l.cpLabel:''}</div>${l.gratitude?`<div class="log-q">"${esc(l.gratitude)}"</div>`:''}${l.t3&&l.t3.some(t=>t)?l.t3.filter(t=>t).map(t=>`<div class="log-t3">· ${esc(t)}</div>`).join(''):''}</div>`).join('')}</div>`}
+
+function rMonthly(){
+  const y=S.cy,m=S.cm;
+  const mname=new Date(y,m,1).toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+  const first=new Date(y,m,1).getDay(),dim=new Date(y,m+1,0).getDate();
+  const off=(first+6)%7;
+  const logMap={};
+  S.logs.forEach(l=>{const d=new Date(l.date);if(d.getFullYear()===y&&d.getMonth()===m)logMap[d.getDate()]=l});
+  const ml=Object.values(logMap);
+  const scored=ml.filter(l=>l.mood);
+  const avg=scored.length?(scored.reduce((s,l)=>s+(MSC[l.mood]||0),0)/scored.length).toFixed(1):'—';
+  let cells='';
+  for(let i=0;i<off;i++)cells+=`<div class="cal-day empty"></div>`;
+  const now=new Date();
+  for(let d=1;d<=dim;d++){
+    const l=logMap[d],isT=now.getDate()===d&&now.getMonth()===m&&now.getFullYear()===y;
+    const sc=l?.mood?MSC[l.mood]:0,bg=l?`background:${dotCol(sc)}18`:'';
+    cells+=`<div class="cal-day${l?' logged':''}${isT?' today':''}" style="${bg}"><span class="cal-day-n" style="color:${l?dotCol(sc):'var(--text-dim)'}">${d}</span>${l?`<div class="cal-dot" style="background:${dotCol(sc)}"></div>`:'<div style="height:9px"></div>'}</div>`;
+  }
+  const mc={};ml.forEach(l=>{if(l.mood)mc[l.mood]=(mc[l.mood]||0)+1});
+  const top=Object.entries(mc).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  return`<div class="card">
+<div class="cal-nav"><button class="cal-nav-btn" onclick="calPrev()">← Prev</button><div class="cal-month">${mname}</div><button class="cal-nav-btn" onclick="calNext()">Next →</button></div>
+<div class="stat-grid"><div class="stat-card"><span class="stat-v">${ml.length}</span><span class="stat-l">Nights logged</span></div><div class="stat-card"><span class="stat-v">${avg}<span style="font-size:1rem;color:var(--lilac-mute)">/5</span></span><span class="stat-l">Avg mood score</span></div></div>
+<div class="cal-grid">${['M','T','W','T','F','S','S'].map(d=>`<div class="cal-hd">${d}</div>`).join('')}${cells}</div>
+${top.length?`<div style="border-top:1px solid rgba(196,168,232,0.07);padding-top:0.9rem"><div class="section-tag">Most frequent moods this month</div><div style="display:flex;gap:0.8rem;flex-wrap:wrap">${top.map(([em,n])=>`<div style="display:flex;align-items:center;gap:0.35rem;font-size:0.82rem;color:var(--text-mute)"><span style="font-size:1.1rem">${em}</span>${n}×</div>`).join('')}</div></div>`:''}
+<div style="margin-top:1rem;padding:0.6rem;background:rgba(255,255,255,0.015);border-radius:10px"><div style="display:flex;gap:0.8rem;flex-wrap:wrap;align-items:center"><span style="font-size:0.6rem;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase">Mood score</span>${[['#86efac','Great 5'],['#c4a8e8','Good 4'],['#7dd3fc','Steady 3'],['#fde084','Low 2'],['#f4a7b9','Hard 1']].map(([col,lb])=>`<span style="display:flex;align-items:center;gap:0.3rem;font-size:0.65rem;color:var(--text-dim)"><span style="width:8px;height:8px;border-radius:50%;background:${col};display:inline-block"></span>${lb}</span>`).join('')}</div></div>
+</div>`}
+</script>
+</body>
+</html>
